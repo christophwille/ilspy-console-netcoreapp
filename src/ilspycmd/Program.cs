@@ -7,17 +7,34 @@ using ICSharpCode.Decompiler.CSharp.OutputVisitor;
 using ICSharpCode.Decompiler.CSharp.Transforms;
 using ICSharpCode.Decompiler.TypeSystem;
 using ICSharpCode.Decompiler.TypeSystem.Implementation;
+using McMaster.Extensions.CommandLineUtils;
 using Mono.Cecil;
 
 namespace ilspycmd
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
-            string assemblyFileName = typeof(Program).Assembly.Location;
-            assemblyFileName = Path.Combine(Path.GetDirectoryName(assemblyFileName), "owin.dll");
+            // https://github.com/natemcmaster/CommandLineUtils/
+            // Older cmd line clients (for options reference): https://github.com/aerror2/ILSpy-For-MacOSX and https://github.com/andreif/ILSpyMono
+            var app = new CommandLineApplication();
 
+            app.HelpOption("-h|--help");
+            var argAssembly = app.Argument("Assembly name", "The assembly that is being parsed");
+
+            app.OnExecute(() =>
+            {
+                string asmName = argAssembly.Value;
+                DecompileToScreen(asmName);
+                return 0;
+            });
+
+            return app.Execute(args);
+        }
+
+        static void DecompileToScreen(string assemblyFileName)
+        {
             DefaultAssemblyResolver resolver = new DefaultAssemblyResolver();
             resolver.AddSearchDirectory(Path.GetDirectoryName(assemblyFileName));
             resolver.RemoveSearchDirectory(".");
@@ -38,7 +55,6 @@ namespace ilspycmd
             syntaxTree.AcceptVisitor(visitor);
 
             Console.WriteLine(output);
-            Console.Read();
         }
     }
 }
