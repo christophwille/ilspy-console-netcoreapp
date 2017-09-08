@@ -23,10 +23,14 @@ namespace ilspycmd
             app.HelpOption("-h|--help");
             var argAssembly = app.Argument("Assembly name", "The assembly that is being parsed");
 
-            app.OnExecute(() =>
-            {
-                string asmName = argAssembly.Value;
-                DecompileToScreen(asmName);
+            app.OnExecute(() => {
+                // HACK : the CommandLineUtils package does not allow us to specify an argument as mandatory.
+                // Therefore we're implementing it as simple as possible.
+                if (argAssembly.Value == null) {
+                    app.ShowHelp();
+                    return -1;
+                }
+                DecompileToScreen(argAssembly.Value);
                 return 0;
             });
 
