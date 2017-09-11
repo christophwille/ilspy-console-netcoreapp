@@ -28,8 +28,9 @@ namespace ilspycmd
             var outputOption = app.Option("-o|--outputdir <directory>", "The output directory, if omitted decompiler output is written to standard out.", CommandOptionType.SingleValue);
             var typeOption = app.Option("-t|--type <type-name>", "The FQN of the type to decompile.", CommandOptionType.SingleValue);
             var listOption = app.Option("-l|--list <entity-type(s)>", "Lists all entities of the specified type(s). Valid types: c(lass), i(interface), s(truct), d(elegate), e(num)", CommandOptionType.MultipleValue);
-            app.ExtendedHelpText = @"
--o is valid with every option and required when using -p.";
+            app.ExtendedHelpText = Environment.NewLine + "-o is valid with every option and required when using -p.";
+
+            app.ThrowOnUnexpectedArgument = false; // Ignore invalid arguments / options
 
             app.OnExecute(() => {
                 // HACK : the CommandLineUtils package does not allow us to specify an argument as mandatory.

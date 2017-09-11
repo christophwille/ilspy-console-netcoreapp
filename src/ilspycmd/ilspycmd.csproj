@@ -6,13 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ICSharpCode.Decompiler" Version="3.0.0-alpha1" />
-    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.0.0-beta" />
+    <PackageReference Include="ICSharpCode.Decompiler" Version="3.0.0-alpha2" />
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.0.0-rc" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="Owin.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
